@@ -17,7 +17,7 @@ class DefaultWordTokenizer(object):
     """NLTK tokenizer"""
     def tokenize(self, text):
         return nltk.word_tokenize(text)
-
+ 
 
 class HebrewWordTokenizer:
     """https://github.com/iddoberger/awesome-hebrew-nlp"""
@@ -36,6 +36,17 @@ class HebrewWordTokenizer:
             word for token, word, _, _ in tokenize(text)
             if token in (Groups.HEBREW, Groups.HEBREW_1, Groups.HEBREW_2)
         ]
+
+class ArabicWordTokenizer:
+    def tokenize(self,text):
+        try:
+            from pyarabic.araby import tokenize
+            from tashaphyne.stemming import ArabicLightStemmer
+        except ImportError as e:
+            raise ValueError("Arabic tokenizer requires both tashaphyne and pyarabic. Please, install it by command 'pip install tashaphyne pyarabic.")
+
+        words = tokenize(text)
+        return [ArabicLightStemmer(word) for word in words]
 
 
 class JapaneseWordTokenizer:
@@ -98,6 +109,7 @@ class Tokenizer(object):
         'japanese': nltk.RegexpTokenizer('[^　！？。]*[！？。]'),
         'chinese': nltk.RegexpTokenizer('[^　！？。]*[！？。]'),
         'korean': KoreanSentencesTokenizer(),
+        'arabic': nltk.RegexpTokenizer('[.،:؛!؟]*[.،:؛!؟]')
     }
 
     SPECIAL_WORD_TOKENIZERS = {
@@ -105,6 +117,7 @@ class Tokenizer(object):
         'japanese': JapaneseWordTokenizer(),
         'chinese': ChineseWordTokenizer(),
         'korean': KoreanWordTokenizer(),
+        'arabic':ArabicWordTokenizer()
     }
 
     def __init__(self, language):
