@@ -44,9 +44,9 @@ class ArabicWordTokenizer:
             from tashaphyne.stemming import ArabicLightStemmer
         except ImportError as e:
             raise ValueError("Arabic tokenizer requires both tashaphyne and pyarabic. Please, install it by command 'pip install tashaphyne pyarabic.")
-
         words = tokenize(text)
-        return [ArabicLightStemmer(word) for word in words]
+        ArListem = ArabicLightStemmer()
+        return [ArListem.light_stem(word) for word in words]
 
 
 class JapaneseWordTokenizer:
