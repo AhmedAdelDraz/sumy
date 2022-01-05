@@ -109,7 +109,7 @@ class Tokenizer(object):
         'japanese': nltk.RegexpTokenizer('[^　！？。]*[！？。]'),
         'chinese': nltk.RegexpTokenizer('[^　！？。]*[！？。]'),
         'korean': KoreanSentencesTokenizer(),
-        'arabic': nltk.RegexpTokenizer('[.،:؛!؟]*[.،:؛!؟]')
+        'arabic': nltk.RegexpTokenizer('[^.،:؛!؟]+')
     }
 
     SPECIAL_WORD_TOKENIZERS = {
